@@ -220,14 +220,14 @@ func (r *Router) AppRequest(ctx context.Context, nodeID ids.NodeID, requestID ui
 	return nil
 }
 
-func (r *Router) AppRequestFailed(ctx context.Context, nodeID ids.NodeID, requestID uint32) error {
+func (r *Router) AppRequestFailed(ctx context.Context, nodeID ids.NodeID, requestID uint32, err error) error {
 	start := time.Now()
 	pending, ok := r.clearAppRequest(requestID)
 	if !ok {
 		return ErrUnrequestedResponse
 	}
 
-	pending.AppResponseCallback(ctx, nodeID, nil, ErrAppRequestFailed)
+	pending.AppResponseCallback(ctx, nodeID, nil, err)
 	pending.appRequestFailedTime.Observe(float64(time.Since(start)))
 	return nil
 }
@@ -290,14 +290,14 @@ func (r *Router) CrossChainAppRequest(
 	return nil
 }
 
-func (r *Router) CrossChainAppRequestFailed(ctx context.Context, chainID ids.ID, requestID uint32) error {
+func (r *Router) CrossChainAppRequestFailed(ctx context.Context, chainID ids.ID, requestID uint32, err error) error {
 	start := time.Now()
 	pending, ok := r.clearCrossChainAppRequest(requestID)
 	if !ok {
 		return ErrUnrequestedResponse
 	}
 
-	pending.CrossChainAppResponseCallback(ctx, chainID, nil, ErrAppRequestFailed)
+	pending.CrossChainAppResponseCallback(ctx, chainID, nil, err)
 	pending.crossChainAppRequestFailedTime.Observe(float64(time.Since(start)))
 	return nil
 }
