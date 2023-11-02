@@ -15,6 +15,8 @@ import (
 )
 
 var (
+	_ error = (*AppError)(nil)
+
 	// ErrUnexpected is a default error used to signal unexpected behavior
 	ErrUnexpected = &AppError{
 		Code:    0,
@@ -26,8 +28,6 @@ var (
 		Code:    1,
 		Message: "timed out",
 	}
-
-	_ error = (*AppError)(nil)
 )
 
 // Engine describes the standard interface of a consensus engine.
